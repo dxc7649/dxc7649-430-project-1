@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Daily Life Calender - Add to To-Do List</title>
+    <link rel="stylesheet" type="text/css" href="/style.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
+    <script type="text/babel">
+        const parseJSON = (xhr, content) => {
+           if (xhr.response && xhr.getResponseHeader('Content-Type') === 'application/json') {
+               const obj = JSON.parse(xhr.response);
+               console.dir(obj);
+               
+               if (obj.message) {
+                   content.innerHTML += `<p>${obj.message}</p>`;
+               }
+           }
+        };
+        
+        const handleResponse = (xhr) => {
+            const content = document.querySelector('#content');
+            
+            switch(xhr.status) {
+                case 200:
+                    content.innerHTML = '<b>Success</b>'
+                    break;
+                case 201:
+                    content.innerHTML = '<b>Task is added!</b>'
+                    break;
+                case 204:
+                    content.innerHTML = '<b>Updated Successfully!</b>'
+                    break;
+                case 400:
+                    content.innerHTML = '<b>Bad Request</b>'
+                    break;
+                default:
+                    content.innerHTML = '<b>Error code not implemented by client</b>'
+                    break;
+            }
+            
+            parseJSON(xhr, content);
+        };
+        
+        const sendPost = (e, calenderForm) => {
+            e.preventDefault();
+            
+            const taskAction = calenderForm.getAttribute('action');
+            const taskMethod = calenderForm.getAttribute('method');
+            
+            const nameField = calenderForm.querySelector('#nameField');
+            const timeField = calenderForm.querySelector('#timeField');
+            const usersField = calenderForm.querySelector('#usersField');
+            
+            if (localStorage.getItem(usersField.value) === null) {
+                const content = document.querySelector('#content');
+                
+                content.innerHTML = '<b>Counld not find the user! Please sign up first!</b>'
+            } else {
+                const xhr = new XMLHttpRequest();
+                xhr.open(taskMethod, taskAction);
+            
+                xhr.setRequestHeader('Accept', 'application/json');
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            
+                xhr.onload = () => handleResponse(xhr);
+            
+                const formData = `tasks=${nameField.value}&times=${timeField.value}&users=${usersField.value}`; 
+                xhr.send(formData);     
+            
+                return false;   
+            }
+        };
+        
+        const init = () => {
+            const calenderForm = document.querySelector('#calenderForm');
+            
+            const addTask = (e) => sendPost(e, calenderForm);    
+            
+            calenderForm.addEventListener('submit', addTask);
+        };
+
+        window.onload = init;
+    </script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="/welcome.html">Home</a> |
+            <a href="/users.html">Add Users</a> |
+            <a href="/task.html">Add Task</a> |
+            <a href="/admin.html">Users &amp; Lists</a>
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <h1>Daily Life Calender - Add Tasks</h1>
+
+            <form id="calenderForm" action="/addTask" method="post">
+                <label for="users">Username:</label><br>
+                <input type="text" id="usersField" name="users" /><br><br>
+                <label for="tasks">Task:</label><br>
+                <input type="text" id="nameField" name="tasks" /><br><br>
+                <label for="times">Time:</label><br>
+                <input type="text" id="timeField" name="times" /><br><br>
+                <input type="submit" value="Add Task" />
+            </form>
+
+            <p><a href="/getTasks">View all current tasks</a></p>
+        </section>
+
+        <section id="content">
+
+        </section>
+    </main>
+</body>
+
+</html>

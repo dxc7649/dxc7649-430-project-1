@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Daily Life Calender - Add New Users</title>
+    <link rel="stylesheet" type="text/css" href="/style.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
+    <script type="text/babel">
+        const parseJSON = (xhr, content) => {
+           if (xhr.response && xhr.getResponseHeader('Content-Type') === 'application/json') {
+               const obj = JSON.parse(xhr.response);
+               console.dir(obj);
+               
+               if (obj.message) {
+                   content.innerHTML += `<p>${obj.message}</p>`;
+               }
+           }
+        };
+        
+        const handleResponse = (xhr) => {
+            const content = document.querySelector('#content');
+            
+            switch(xhr.status) {
+                case 200:
+                    content.innerHTML = '<b>Success</b>'
+                    break;
+                case 201:
+                    content.innerHTML = '<b>User is added!</b>'
+                    break;
+                case 204:
+                    content.innerHTML = '<b>Updated Successfully!</b>'
+                    break;
+                case 400:
+                    content.innerHTML = '<b>Bad Request</b>'
+                    break;
+                default:
+                    content.innerHTML = '<b>Error code not implemented by client</b>'
+                    break;
+            }
+            
+            parseJSON(xhr, content);
+        };
+        
+        const sendPost = (e, usersForm) => {
+            e.preventDefault();
+            
+            const userAction = usersForm.getAttribute('action');
+            const userMethod = usersForm.getAttribute('method');
+            
+            const nameField = usersForm.querySelector('#nameField');
+            
+            const xhr = new XMLHttpRequest();
+            xhr.open(userMethod, userAction);
+            
+            xhr.setRequestHeader('Accept', 'application/json');
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            
+            xhr.onload = () => handleResponse(xhr);
+            
+            const formData = `users=${nameField.value}`; 
+            xhr.send(formData);     
+            
+            localStorage.setItem(nameField.value, nameField.value);
+            
+            return false;
+        };
+        
+        const init = () => {
+            const usersForm = document.querySelector('#usersForm');
+            
+            const addUsers = (e) => sendPost(e, usersForm);
+            
+            usersForm.addEventListener('submit', addUsers);
+        };
+
+        window.onload = init;
+    </script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <a href="/welcome.html">Home</a> |
+            <a href="/users.html">Add Users</a> |
+            <a href="/task.html">Add Task</a> |
+            <a href="/admin.html">Users &amp; Lists</a>
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <h1>Daily Life Calender - Sign Up</h1>
+
+            <form id="usersForm" action="/addUsers" method="post">
+                <label for="users">New Username:</label><br>
+                <input type="text" id="nameField" name="users" /><br><br>
+                <input type="submit" value="Sign Up" />
+            </form>
+
+            <p><a href="/getUsers">View all current users</a></p>
+        </section>
+
+        <section id="content">
+
+        </section>
+    </main>
+</body>
+
+</html>
