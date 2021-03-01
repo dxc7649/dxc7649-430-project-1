@@ -11,6 +11,7 @@ const jsonHandler = require('./responses.js');
 // 3 - locally this will be 3000, on Heroku it will be assigned
 const port = process.env.PORT || process.env.NODE_PORT || 3000;
 
+/*
 const urlStruct = {
   // Endpoint for default landing page and welcome page
   '/': htmlHandler.getWelcomeResponse,
@@ -35,6 +36,7 @@ const urlStruct = {
   // Endpoint for 404 Page
   notFound: htmlHandler.getErrorResponse,
 };
+*/
 
 const handlePost = (request, response, parsedUrl) => {
   if (parsedUrl.pathname === '/addTask') {
@@ -78,21 +80,42 @@ const handlePost = (request, response, parsedUrl) => {
   }
 };
 
+const handleGet = (request, response, parsedUrl) => {
+  if (parsedUrl.pathname === '/style.css') {
+    htmlHandler.getCSS(request, response);
+  } else if (parsedUrl.pathname === '/getTasks') {
+    jsonHandler.getTasks(request, response);
+  } else if (parsedUrl.pathname === '/getUsers') {
+    jsonHandler.getUsers(request, response);
+  } else if (parsedUrl.pathname === '/' || parsedUrl.pathname === '/welcome.html') {
+    htmlHandler.getWelcomeResponse(request, response);
+  } else if (parsedUrl.pathname === '/users.html') {
+    htmlHandler.getUsersResponse(request, response);
+  } else if (parsedUrl.pathname === '/task.html') {
+    htmlHandler.getMainResponse(request, response);
+  } else if (parsedUrl.pathname === '/admin.html') {
+    htmlHandler.getAdminResponse(request, response);
+  } else {
+    htmlHandler.getErrorResponse(request, response);
+  }
+};
+
 const onRequest = (request, response) => {
   const parsedUrl = url.parse(request.url);
-  const {
-    pathname,
-  } = parsedUrl;
 
   if (request.method === 'POST') {
     handlePost(request, response, parsedUrl);
+  } else if (request.method === 'GET') {
+    handleGet(request, response, parsedUrl);
   }
 
+  /*
   if (urlStruct[pathname]) {
     urlStruct[pathname](request, response);
   } else {
     urlStruct.notFound(request, response);
   }
+  */
 };
 
 http.createServer(onRequest).listen(port); // method chaining!
