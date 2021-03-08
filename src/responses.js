@@ -1,7 +1,8 @@
-// const _ = require('underscore');
-const multiTasks = {};
+const multiTasks = [];
 
 const multiUsers = {};
+
+const getBinarySize = (string) => Buffer.byteLength(string, 'utf8');
 
 const respondJSON = (request, response, status, object) => {
   response.writeHead(status, {
@@ -18,12 +19,64 @@ const respondJSONMeta = (request, response, status) => {
   response.end();
 };
 
+const respondMeta = (request, response, type, byteLength) => {
+  const headers = {
+    'Content-Type': type,
+    'Content-Length': byteLength,
+  };
+
+  response.writeHead(200, headers);
+  response.end();
+};
+
+/*
 const getTasks = (request, response) => {
   const responseJSON = {
     multiTasks,
   };
 
   respondJSON(request, response, 200, responseJSON);
+};
+
+*/
+
+const getTasks = (request, response, acceptedTypes) => {
+  if (acceptedTypes.includes('text/xml') === true) {
+    const taskXML = multiTasks;
+
+    response.writeHead(200, {
+      'Content-Type': 'text/xml',
+    });
+
+    response.write('<multiTasks>');
+    for (let i = 0; i < taskXML.length; i += 1) {
+      response.write(`
+                <multiTask>
+                    <user>${taskXML[i].user}</user>
+                    <task>${taskXML[i].task}</task>
+                    <time>${taskXML[i].time}</time>
+                </multiTask>
+            `);
+    }
+    response.write('</multiTasks>');
+
+    response.end();
+  } else {
+    const taskString = JSON.stringify(multiTasks);
+    response.writeHead(200, {
+      'Content-Type': 'application/json',
+    });
+    response.write(taskString);
+    response.end();
+
+    const taskJSON = JSON.stringify(multiTasks);
+
+    return respondMeta(request, response, 'application/json', getBinarySize(taskJSON));
+  }
+
+  const taskString = JSON.stringify(multiTasks);
+
+  return respondMeta(request, response, 'application/json', getBinarySize(taskString));
 };
 
 const getUsers = (request, response) => {
@@ -46,41 +99,23 @@ const addTask = (request, response, body) => {
 
   let responseCode = 201;
 
-  /*
-    if (multiTasks[body.tasks]) {
-      responseCode = 204;
-    } else {
-      multiTasks[body.tasks] = {};
-    }
-    */
+  if (multiTasks.find((element) => element.task === body.tasks)
+        && multiTasks.find((element) => element.user === body.users)) {
+    responseCode = 204;
 
-  if (multiTasks[body.users]) {
-    for (let i = 0; i < multiTasks[body.users].length; i += 1) {
-      if (multiTasks[body.users][i].task === body.tasks) {
-        responseCode = 204;
-
-        multiTasks[body.users][i].time = body.times;
+    for (let i = 0; i < multiTasks.length; i += 1) {
+      if (multiTasks[i].task === body.tasks && multiTasks[i].user === body.users) {
+        multiTasks[i].time = body.times;
         break;
       }
     }
-
-    if (multiTasks[body.users].find((element) => element.task === body.tasks) === undefined) {
-      const newTask = {
-        task: body.tasks,
-        time: body.times,
-      };
-
-      multiTasks[body.users].push(newTask);
-    }
   } else {
-    multiTasks[body.users] = [];
+    const newUser = {};
+    newUser.user = body.users;
+    newUser.task = body.tasks;
+    newUser.time = body.times;
 
-    const newTask = {
-      task: body.tasks,
-      time: body.times,
-    };
-
-    multiTasks[body.users].push(newTask);
+    multiTasks.push(newUser);
   }
 
   if (responseCode === 201) {

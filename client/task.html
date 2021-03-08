@@ -83,7 +83,7 @@
             console.log("obj=", obj);
             // now go ahead and update #jokeContainer with the contents of the joke
           
-            document.querySelector("#content").innerHTML = `<p>${obj[0]}</p>`;
+            document.querySelector("#content").innerHTML = `<p>${obj}</p>`;
         };
         
         const downloadTask = (e) => {
@@ -154,17 +154,13 @@
             </form>
 
             <br>
-            <p><a href="/getTasks">View all current tasks</a></p>
+            <p>For allication/json, <a href="/getTasks">view all current tasks</a>. For text/xml, head to Postman</p>
             <button id="getButton" class="w-100 btn btn-lg btn-primary" type="submit" value="Add Task">Show Your Tasks</button>
         </section>
 
         <section id="content">
 
         </section>
-
-        <!--<section id="taskContainer">
-
-        </section> -->
     </main>
 </body>
 

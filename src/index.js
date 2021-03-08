@@ -80,42 +80,45 @@ const handlePost = (request, response, parsedUrl) => {
   }
 };
 
-const handleGet = (request, response, parsedUrl) => {
+const handleGet = (request, response, parsedUrl, acceptedTypes) => {
   if (parsedUrl.pathname === '/style.css') {
-    htmlHandler.getCSS(request, response);
+    htmlHandler.getCSS(request, response, acceptedTypes);
   } else if (parsedUrl.pathname === '/getTasks') {
-    jsonHandler.getTasks(request, response);
+    jsonHandler.getTasks(request, response, acceptedTypes);
   } else if (parsedUrl.pathname === '/getUsers') {
-    jsonHandler.getUsers(request, response);
+    jsonHandler.getUsers(request, response, acceptedTypes);
   } else if (parsedUrl.pathname === '/' || parsedUrl.pathname === '/welcome.html') {
-    htmlHandler.getWelcomeResponse(request, response);
+    htmlHandler.getWelcomeResponse(request, response, acceptedTypes);
   } else if (parsedUrl.pathname === '/users.html') {
-    htmlHandler.getUsersResponse(request, response);
+    htmlHandler.getUsersResponse(request, response, acceptedTypes);
   } else if (parsedUrl.pathname === '/task.html') {
-    htmlHandler.getMainResponse(request, response);
+    htmlHandler.getMainResponse(request, response, acceptedTypes);
   } else if (parsedUrl.pathname === '/admin.html') {
-    htmlHandler.getAdminResponse(request, response);
+    htmlHandler.getAdminResponse(request, response, acceptedTypes);
   } else {
     htmlHandler.getErrorResponse(request, response);
   }
 };
 
 const onRequest = (request, response) => {
+  let acceptedTypes = request.headers.accept.split(',');
+  acceptedTypes = acceptedTypes || [];
+
   const parsedUrl = url.parse(request.url);
 
   if (request.method === 'POST') {
     handlePost(request, response, parsedUrl);
   } else if (request.method === 'GET') {
-    handleGet(request, response, parsedUrl);
+    handleGet(request, response, parsedUrl, acceptedTypes);
   }
 
   /*
-  if (urlStruct[pathname]) {
-    urlStruct[pathname](request, response);
-  } else {
-    urlStruct.notFound(request, response);
-  }
-  */
+      if (urlStruct[pathname]) {
+        urlStruct[pathname](request, response);
+      } else {
+        urlStruct.notFound(request, response);
+      }
+      */
 };
 
 http.createServer(onRequest).listen(port); // method chaining!
