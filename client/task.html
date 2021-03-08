@@ -5,6 +5,9 @@
     <title>Daily Life Calender - Add to To-Do List</title>
     <link rel="stylesheet" type="text/css" href="/style.css">
 
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
     <script type="text/babel">
         const parseJSON = (xhr, content) => {
@@ -72,48 +75,96 @@
             }
         };
         
+        const handleTaskResponse = (e) => {
+            console.log("e.target =", e.target); // here, `e.target` is the `xhr` object 
+            console.log("e.target.response = ", e.target.response); // so that means this is a string of "joke" JSON
+            //const obj = JSON.parse(e.target.response); // turn it back into an object
+            const obj = e.target.response;
+            console.log("obj=", obj);
+            // now go ahead and update #jokeContainer with the contents of the joke
+          
+            document.querySelector("#content").innerHTML = `<p>${obj[0]}</p>`;
+        };
+        
+        const downloadTask = (e) => {
+            if (e.target.id === "getButton") {
+                const taskURL = "/getTasks";
+                const xhr = new XMLHttpRequest();
+                
+                xhr.open("GET", taskURL);
+                xhr.onload = handleTaskResponse;
+                
+                xhr.setRequestHeader('Accept', 'application/javascript');
+                xhr.send();
+            };
+        }
+
         const init = () => {
             const calenderForm = document.querySelector('#calenderForm');
             
             const addTask = (e) => sendPost(e, calenderForm);    
             
             calenderForm.addEventListener('submit', addTask);
+            
+            document.querySelector("#getButton").addEventListener("click", downloadTask);
         };
 
         window.onload = init;
     </script>
 </head>
 
-<body>
-    <header>
-        <nav>
-            <h1>Daily Life Calender - Add Tasks</h1>
-            <a href="/welcome.html">Home</a> |
-            <a href="/users.html">Add Users</a> |
-            <a href="/task.html">Add Task</a> |
-            <a href="/admin.html">Users &amp; Lists</a>
-        </nav>
-    </header>
+<body class="text-center">
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Daily To-Do List</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/welcome.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/users.html">Add Users</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/task.html">Add Task</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin.html">Users &amp; Lists</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-    <main>
+    <main class="form-signup">
         <section>
             <br>
             <form id="calenderForm" action="/addTask" method="post">
-                <label for="users">Username:</label><br>
-                <input type="text" id="usersField" name="users" /><br><br>
-                <label for="tasks">Task:</label><br>
-                <input type="text" id="nameField" name="tasks" /><br><br>
-                <label for="times">Time:</label><br>
-                <input type="text" id="timeField" name="times" /><br><br>
-                <input type="submit" value="Add Task" />
+                <h1 class="h3 mb-3 fw-normal">Add Tasks</h1>
+                <label for="users" class="visually-hidden">Username:</label><br>
+                <input type="text" id="usersField" class="form-control" placeholder="Username" name="users" />
+                <label for="tasks" class="visually-hidden">Task:</label><br>
+                <input type="text" id="nameField" class="form-control" placeholder="Task" name="tasks" />
+                <label for="times" class="visually-hidden">Date:</label><br>
+                <input type="text" id="timeField" name="times" class="form-control" placeholder="Choose a date" onfocus="(this.type='date')" onblur="(this.type='text')" /><br>
+                <button class="w-100 btn btn-lg btn-primary" type="submit" value="Add Task">Add Task</button>
             </form>
 
+            <br>
             <p><a href="/getTasks">View all current tasks</a></p>
+            <button id="getButton" class="w-100 btn btn-lg btn-primary" type="submit" value="Add Task">Show Your Tasks</button>
         </section>
 
         <section id="content">
 
         </section>
+
+        <!--<section id="taskContainer">
+
+        </section> -->
     </main>
 </body>
 

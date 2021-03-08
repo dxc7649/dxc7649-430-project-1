@@ -46,15 +46,42 @@ const addTask = (request, response, body) => {
 
   let responseCode = 201;
 
-  if (multiTasks[body.tasks]) {
-    responseCode = 204;
-  } else {
-    multiTasks[body.tasks] = {};
-  }
+  /*
+    if (multiTasks[body.tasks]) {
+      responseCode = 204;
+    } else {
+      multiTasks[body.tasks] = {};
+    }
+    */
 
-  multiTasks[body.tasks].users = body.users;
-  multiTasks[body.tasks].tasks = body.tasks;
-  multiTasks[body.tasks].times = body.times;
+  if (multiTasks[body.users]) {
+    for (let i = 0; i < multiTasks[body.users].length; i += 1) {
+      if (multiTasks[body.users][i].task === body.tasks) {
+        responseCode = 204;
+
+        multiTasks[body.users][i].time = body.times;
+        break;
+      }
+    }
+
+    if (multiTasks[body.users].find((element) => element.task === body.tasks) === undefined) {
+      const newTask = {
+        task: body.tasks,
+        time: body.times,
+      };
+
+      multiTasks[body.users].push(newTask);
+    }
+  } else {
+    multiTasks[body.users] = [];
+
+    const newTask = {
+      task: body.tasks,
+      time: body.times,
+    };
+
+    multiTasks[body.users].push(newTask);
+  }
 
   if (responseCode === 201) {
     responseJSON.message = 'Task is added!';
