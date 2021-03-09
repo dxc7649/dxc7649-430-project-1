@@ -37,7 +37,14 @@ ul {
 
 .form-welcome {
   width: 100%;
-  max-width: 600px;
+  max-width: 650px;
+  padding: 15px;
+  margin: auto;
+}
+
+.form-error {
+  width: 100%;
+  max-width: 400px;
   padding: 15px;
   margin: auto;
 }

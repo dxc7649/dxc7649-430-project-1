@@ -82,9 +82,9 @@
 </head>
 
 <body class="text-center">
-    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Daily To-Do List</a>
+            <a class="navbar-brand" href="#"><img src="list.png" alt="To-Do List"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -97,7 +97,7 @@
                         <a class="nav-link active" href="/users.html">Add Users</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/task.html">Add Task</a>
+                        <a class="nav-link" href="/task.html">Add Tasks</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/admin.html">Users &amp; Lists</a>
@@ -117,6 +117,7 @@
             </form>
             <br>
             <p><a href="/getUsers">View all current users</a></p>
+            <p><a href="/getUsers?limit=1">View only first user</a></p>
         </section>
 
         <section id="content">

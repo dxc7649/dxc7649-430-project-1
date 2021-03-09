@@ -13,9 +13,9 @@
 </head>
 
 <body>
-   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">To-Do List</a>
+            <a class="navbar-brand" href="#"><img src="list.png" alt="To-Do List"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -28,7 +28,7 @@
                         <a class="nav-link" href="/users.html">Add Users</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/task.html">Add Task</a>
+                        <a class="nav-link" href="/task.html">Add Tasks</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/admin.html">Users &amp; Lists</a>
@@ -43,14 +43,17 @@
         <section>
             <h2>For New Users &amp; Old Users</h2><br>
             <ul>
-                <li>For new uesrs, click on <a href="/users.html">Add Users to join</a>!</li><br>
-                <li>For old users, <a href="/task.html">add more to To-Do List</a>!</li>
+                <li>For new users, click on <a href="/users.html">Add Users to join</a>!</li><br>
+                <li>For old users, <a href="/task.html">add more to To-Do List</a>!</li><br>
+                <li>Endpoints: <a href="/getUsers">getUsers</a>, <a href="/getUsers?limit=1">getUsers?limit=1</a>&#40;limit can be changed&#41;, <a href="/getTasks">getTasks</a></li>
             </ul>
         </section>
         <section>
             <h2>For Administrators</h2><br>
             <ul>
                 <li>Head to <a href="/admin.html">Users &amp; Lists</a> for all users and their To-Do Lists</li><br>
+                <li>This application uses "Bootstrap", and here is the <a href="/style.css">style sheet</a></li><br>
+                <li>There is one image being used for this application, and it is <a href="/list.png">here</a></li><br>
                 <li>There is also a <a href="/error.html">404 Page</a>. You may want to check it out!</li>
             </ul>
         </section>
