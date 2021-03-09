@@ -5,11 +5,12 @@
     <title>Daily Life Calender - Add to To-Do List</title>
     <link rel="stylesheet" type="text/css" href="/style.css">
 
-    <!-- CSS only -->
+    <!-- CSS only, import CSS framework from Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
     <script type="text/babel">
+        // 1 - Update the innerHTML of section with id "content" accroding to the status code 
         const parseJSON = (xhr, content) => {
            if (xhr.response && xhr.getResponseHeader('Content-Type') === 'application/json') {
                const obj = JSON.parse(xhr.response);
@@ -21,6 +22,7 @@
            }
         };
         
+        // 2 - Handling response for different status codes: 200, 201, 204, 400, 404 
         const handleResponse = (xhr) => {
             const content = document.querySelector('#content');
             
@@ -45,6 +47,7 @@
             parseJSON(xhr, content);
         };
         
+        // 3 - "POST" request for add tasks to the list when the button "add task" is clicked 
         const sendPost = (e, calenderForm) => {
             e.preventDefault();
             
@@ -75,6 +78,7 @@
             }
         };
         
+        // 4 - Showing all current tasks to the user when the button "Show Your Tasks" is clicked 
         const handleTaskResponse = (e) => {
             console.log("e.target =", e.target); // here, `e.target` is the `xhr` object 
             console.log("e.target.response = ", e.target.response); // so that means this is a string of "joke" JSON
@@ -86,6 +90,7 @@
             document.querySelector("#content").innerHTML = `<p>${obj}</p>`;
         };
         
+        // 5 - Showing all current tasks to the user when the button "Show Your Tasks" is clicked 
         const downloadTask = (e) => {
             if (e.target.id === "getButton") {
                 const taskURL = "/getTasks";

@@ -5,7 +5,7 @@
     <title>Daily Life Calender - Home</title>
     <link rel="stylesheet" type="text/css" href="/style.css">
 
-    <!-- CSS only -->
+    <!-- CSS only, import CSS framework from Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
@@ -13,23 +13,25 @@
 </head>
 
 <body>
+   <!-- Navigation bar with four different links: Home, Add Users, Add Tasks, and Admin -->
    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-primary">
         <div class="container-fluid">
             <a class="navbar-brand" href="#"><img src="list.png" alt="To-Do List"></a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                    <!-- Navigation to Home -->
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="/welcome.html">Home</a>
                     </li>
+                    <!-- Navigation to "Add Users" -->
                     <li class="nav-item">
                         <a class="nav-link" href="/users.html">Add Users</a>
                     </li>
+                    <!-- Navigation to "Add Tasks" -->
                     <li class="nav-item">
                         <a class="nav-link" href="/task.html">Add Tasks</a>
                     </li>
+                    <!-- Navigation to "Admin" -->
                     <li class="nav-item">
                         <a class="nav-link" href="/admin.html">Users &amp; Lists</a>
                     </li>
@@ -38,22 +40,22 @@
         </div>
     </nav>
 
+    <!-- Main html body for texts -->
     <main class="form-welcome">
-        <!-- <p>Organise your activities and tasks, and never forget a necessary task again!</p> -->
         <section>
             <h2>For New Users &amp; Old Users</h2><br>
             <ul>
-                <li>For new users, click on <a href="/users.html">Add Users to join</a>!</li><br>
-                <li>For old users, <a href="/task.html">add more to To-Do List</a>!</li><br>
+                <li>For new users, click on <a href="/users.html">Add Users to join</a>!</li>
+                <li>For old users, <a href="/task.html">add more to To-Do List</a>!</li>
                 <li>Endpoints: <a href="/getUsers">getUsers</a>, <a href="/getUsers?limit=1">getUsers?limit=1</a>&#40;limit can be changed&#41;, <a href="/getTasks">getTasks</a></li>
             </ul>
         </section>
         <section>
-            <h2>For Administrators</h2><br>
+            <br><h2>For Administrators</h2><br>
             <ul>
-                <li>Head to <a href="/admin.html">Users &amp; Lists</a> for all users and their To-Do Lists</li><br>
-                <li>This application uses "Bootstrap", and here is the <a href="/style.css">style sheet</a></li><br>
-                <li>There is one image being used for this application, and it is <a href="/list.png">here</a></li><br>
+                <li>Head to <a href="/admin.html">Users &amp; Lists</a> for all users and their To-Do Lists</li>
+                <li>This application uses "Bootstrap", and here is the <a href="/style.css">style sheet</a></li>
+                <li>There is one image being used for this application, and it is <a href="/list.png">here</a></li>
                 <li>There is also a <a href="/error.html">404 Page</a>. You may want to check it out!</li>
             </ul>
         </section>

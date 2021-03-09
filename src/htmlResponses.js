@@ -1,64 +1,47 @@
+// 1 - Pull in the file system module
 const fs = require('fs');
 
+// 2 - Read and pull in six html pages from the "client" folder
 const welcomePage = fs.readFileSync(`${__dirname}/../client/welcome.html`);
 const mainPage = fs.readFileSync(`${__dirname}/../client/task.html`);
 const userPage = fs.readFileSync(`${__dirname}/../client/users.html`);
 const adminPage = fs.readFileSync(`${__dirname}/../client/admin.html`);
-
 const cssPage = fs.readFileSync(`${__dirname}/../client/style.css`);
 const errorPage = fs.readFileSync(`${__dirname}/../client/error.html`);
 
-const getWelcomeResponse = (request, response) => {
-  response.writeHead(200, {
-    'Content-Type': 'text/html',
-  });
-  response.write(welcomePage);
-  response.end();
-};
+// 3 - General reuseable function for multiple responses
+const generalResponse = (request, response, contentType, loadPage) => {
+    response.writeHead(200, {
+        'Content-Type': contentType,
+    });
+    response.write(loadPage);
+    response.end();
+}
 
-const getMainResponse = (request, response) => {
-  response.writeHead(200, {
-    'Content-Type': 'text/html',
-  });
-  response.write(mainPage);
-  response.end();
-};
+// 4 - Response for "welcome.html" 
+const getWelcomeResponse = (request, response) => generalResponse(request, response, 'text/html', welcomePage);
 
-const getUsersResponse = (request, response) => {
-  response.writeHead(200, {
-    'Content-Type': 'text/html',
-  });
-  response.write(userPage);
-  response.end();
-};
+// 5 - Response for "task.html" 
+const getMainResponse = (request, response) => generalResponse(request, response, 'text/html', mainPage);
 
-const getAdminResponse = (request, response) => {
-  response.writeHead(200, {
-    'Content-Type': 'text/html',
-  });
-  response.write(adminPage);
-  response.end();
-};
+// 6 - Response for "users.html" 
+const getUsersResponse = (request, response) => generalResponse(request, response, 'text/html', userPage);
 
-const getErrorResponse = (request, response) => {
-  response.writeHead(404, {
-    'Content-Type': 'text/html',
-  });
-  response.write(errorPage);
-  response.end();
-};
+// 7 - Response for "admin.html" 
+const getAdminResponse = (request, response) => generalResponse(request, response, 'text/html', adminPage);
 
-const getCSS = (request, response) => {
-  response.writeHead(200, {
-    'Content-Type': 'text/css',
-  });
-  response.write(cssPage);
-  response.end();
-};
+// 8 - Response for "error.html" 
+const getErrorResponse = (request, response) => generalResponse(request, response, 'text/html', errorPage);
 
-module.exports.getMainResponse = getMainResponse;
-module.exports.getWelcomeResponse = getWelcomeResponse;
-module.exports.getUsersResponse = getUsersResponse;
-module.exports.getAdminResponse = getAdminResponse;
-module.exports.getCSS = getCSS;
-module.exports.getErrorResponse = getErrorResponse;
+// 9 - Response for stylesheet "style.css" 
+const getCSS = (request, response) => generalResponse(request, response, 'text/css', cssPage);
+
+// 10 - Exports all these responses 
+module.exports = {
+    getMainResponse,
+    getWelcomeResponse,
+    getUsersResponse,
+    getAdminResponse,
+    getCSS,
+    getErrorResponse,
+};
